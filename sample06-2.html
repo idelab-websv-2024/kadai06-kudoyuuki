@@ -1,27 +1,43 @@
 <!DOCTYPE html>
 <html lang="ja" dir="ltr">
-  <head>
+<head>
     <meta charset="utf-8">
-  </head>
-  <script  src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-  <script>
-function showNasa()
-{
-  twttr.widgets.createTimeline(
-      {
-        sourceType: "profile",
-        screenName: "nasa"
-      },
-      document.getElementById("nasaSpace")
-  );
-}
-  </script>
+    <title>Twitter Profile Timeline</title>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</head>
+<body>
 
-  <body>
+    <h1>Twitter Timeline Viewer</h1>
+    <input type="text" id="username" placeholder="Twitterユーザー名">
+    <button onclick="loadTimeline()">表示</button>
 
-<button type="button" name="NASA" onclick='showNasa()'>NASA</button>
+    <div id="timeline-container"></div>
 
-<div id='nasaSpace'></div>
+    <script>
+        function loadTimeline() {
+            const username = document.getElementById('username').value.trim();
+            if (!username) {
+                alert("ユーザー名を入力してください");
+                return;
+            }
 
-  </body>
+            const container = document.getElementById('timeline-container');
+            container.innerHTML = '';
+
+            const timeline = document.createElement('a');
+            timeline.setAttribute('class', 'twitter-timeline');
+            timeline.setAttribute('href', `https://twitter.com/${username}?ref_src=twsrc%5Etfw`);
+            timeline.innerText = `Tweets by ${username}`;
+
+            container.appendChild(timeline);
+
+            if (window.twttr && window.twttr.widgets) {
+                window.twttr.widgets.load();
+            } else {
+                console.error("Twitterウィジェットが読み込まれていません");
+            }
+        }
+    </script>
+
+</body>
 </html>
